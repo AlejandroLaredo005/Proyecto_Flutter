@@ -15,6 +15,9 @@ class InicioScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[900],
+      appBar: AppBar(
+      ),
+      drawer: MenuLateral(user: user),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +79,8 @@ class InicioScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    '/nosotros', // Pasar el username a la pantalla de nosotros
+                    '/nosotros',
+                    arguments: user, // Pasar el username a la pantalla de nosotros
                   );
                 },
                 style: ElevatedButton.styleFrom(

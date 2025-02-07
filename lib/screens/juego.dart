@@ -21,12 +21,13 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    fetchNewFlag();
+    fetchNewFlag(); // Llama a la función para obtener una nueva bandera al inicio
   }
 
+  // Función para obtener una nueva bandera y opciones de respuesta
   Future<void> fetchNewFlag() async {
     setState(() {
-      isLoading = true;
+      isLoading = true; // Activa el indicador de carga
     });
 
     try {
@@ -47,7 +48,7 @@ class _GameScreenState extends State<GameScreen> {
               options.add(randomOption);
             }
           }
-          options.shuffle();
+          options.shuffle(); // Mezcla las opciones para que no estén ordenadas
         });
       } else {
         throw Exception('Error al cargar los datos del servidor');
@@ -61,28 +62,30 @@ class _GameScreenState extends State<GameScreen> {
       );
     } finally {
       setState(() {
-        isLoading = false;
+        isLoading = false; // Desactiva el indicador de carga al finalizar
       });
     }
   }
 
+  // Función que verifica si la respuesta seleccionada es correcta
   void checkAnswer(String selected) {
     setState(() {
       if (selected == correctCountry) {
-        streak++;
+        streak++; // Incrementa la racha si la respuesta es correcta
         widget.user.totalCorrect++;
         if (streak > widget.user.bestStreak) {
-          widget.user.bestStreak = streak;
+          widget.user.bestStreak = streak; // Actualiza la mejor racha
         }
       } else {
-        streak = 0;
+        streak = 0; // Resetea la racha si la respuesta es incorrecta
         widget.user.totalIncorrect++;
       }
-      updateUserStats();
-      fetchNewFlag();
+      updateUserStats(); // Actualiza las estadísticas del usuario en la base de datos
+      fetchNewFlag(); // Obtiene una nueva bandera
     });
   }
 
+  // Actualiza las estadísticas del usuario en la base de datos
   Future<void> updateUserStats() async {
     try {
       await dbHelper.updateStatistics(widget.user);
@@ -97,14 +100,8 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: Colors.blue[900],
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            // Redirigir a la pantalla de inicio pasando el usuario
-            Navigator.pop(context, widget.user);
-          },
-        ),
       ),
+      drawer: MenuLateral(user: widget.user),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -124,12 +121,13 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
           const SizedBox(height: 20),
-            isLoading
+            isLoading  // Muestra un indicador de carga mientras se obtiene la bandera
                 ? const CircularProgressIndicator()
                 : flagUrl.isNotEmpty
-                    ? Image.network(flagUrl, width: 200, height: 150)
+                    ? Image.network(flagUrl, width: 200, height: 150) // Muestra la bandera si está disponible
                     : const Icon(Icons.image_not_supported, size: 100, color: Colors.white),
             const SizedBox(height: 20),
+            // Muestra los botones con las opciones de países
             ...options.map((country) => SizedBox(
               width: 350, // Ancho fijo para todos los botones
               child: Padding(
@@ -141,6 +139,7 @@ class _GameScreenState extends State<GameScreen> {
               ),
             )),
             const SizedBox(height: 20),
+            // Muestra las estadísticas de la racha actual y la mejor racha
             Text('Racha actual: $streak', style: const TextStyle(color: Colors.white, fontSize: 20)),
             Text('Mejor racha: ${widget.user.bestStreak}', style: const TextStyle(color: Colors.white, fontSize: 18)),
           ],

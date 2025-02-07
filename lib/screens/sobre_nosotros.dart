@@ -1,18 +1,16 @@
 import 'package:proyecto_flutter_alejandro/routes/imports.dart'; 
 
 class SobreNosotrosScreen extends StatelessWidget {
+  final User user;
 
-  const SobreNosotrosScreen({super.key});
+  const SobreNosotrosScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Flecha a la izquierda
-          onPressed: () => Navigator.pop(context), // Volver a la pantalla anterior
-        ),
       ),
+      drawer: MenuLateral(user: user),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

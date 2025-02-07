@@ -16,6 +16,6 @@ class AppRoutes {
     inicio: (context) => InicioScreen(user: ModalRoute.of(context)!.settings.arguments as User,),
     juego: (context) => GameScreen(user: ModalRoute.of(context)!.settings.arguments as User,),
     estadisticas: (context) => EstadisticasScreen(user: ModalRoute.of(context)!.settings.arguments as User,),
-    nosotros: (context) => const SobreNosotrosScreen(),
+    nosotros: (context) => SobreNosotrosScreen(user: ModalRoute.of(context)!.settings.arguments as User,),
   };
 }

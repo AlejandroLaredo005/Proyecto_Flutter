@@ -9,11 +9,8 @@ class EstadisticasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
+      drawer: MenuLateral(user: user),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center( 

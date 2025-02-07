@@ -13,3 +13,4 @@ export 'package:proyecto_flutter_alejandro/screens/sobre_nosotros.dart';
 export 'dart:math';
 export 'dart:convert';
 export 'package:sqflite/sqflite.dart';
+export 'package:proyecto_flutter_alejandro/screens/menu_lateral.dart';
