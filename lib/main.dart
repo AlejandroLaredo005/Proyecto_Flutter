@@ -12,9 +12,7 @@ class HysincApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hysinc Games',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppThemes.appTheme,
       // Ruta inicial
       initialRoute: AppRoutes.inicioSesion, 
       // Definición de rutas

@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
+import 'package:proyecto_flutter_alejandro/routes/imports.dart';
 
 class InicioSesionScreen extends StatelessWidget {
-  const InicioSesionScreen({super.key});
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  InicioSesionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[900],
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -29,41 +31,55 @@ class InicioSesionScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.blue[700],
                   hintText: 'Usuario',
-                  hintStyle: const TextStyle(color: Colors.white70),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.blue[700],
                   hintText: 'Contraseña',
-                  hintStyle: const TextStyle(color: Colors.white70),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Inicio de sesión presionado')),
-                  );
+                onPressed: () async {
+                  final username = usernameController.text;
+                  final password = passwordController.text;
+
+                  final user = await DatabaseHelper.instance
+                      .authenticateUser(username, password);
+
+                  if (user != null) {
+                    // Navegar a la pantalla de inicio con el nombre de usuario
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            InicioScreen(user: user),
+                      ),
+                    );
+                  } else {
+                    // Mostrar un mensaje de error
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Usuario o contraseña incorrectos'),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue[700],
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 ),
                 child: const Text('Iniciar Sesión'),
               ),
@@ -83,3 +99,4 @@ class InicioSesionScreen extends StatelessWidget {
     );
   }
 }
+
